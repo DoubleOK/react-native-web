@@ -1,0 +1,17 @@
+Object.defineProperty(exports,"__esModule",{value:true});var _extends=Object.assign||function(target){for(var i=1;i<arguments.length;i++){var source=arguments[i];for(var key in source){if(Object.prototype.hasOwnProperty.call(source,key)){target[key]=source[key];}}}return target;};var _jsxFileName='src\\modules\\createDOMElement\\index.js';/**
+ * Copyright (c) 2015-present, Nicolas Gallagher.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @noflow
+ */require('../injectResponderEventPlugin');var _AccessibilityUtil=require('../AccessibilityUtil');var _AccessibilityUtil2=_interopRequireDefault(_AccessibilityUtil);var _createDOMProps=require('../createDOMProps');var _createDOMProps2=_interopRequireDefault(_createDOMProps);var _modality=require('../modality');var _modality2=_interopRequireDefault(_modality);var _normalizeNativeEvent=require('../normalizeNativeEvent');var _normalizeNativeEvent2=_interopRequireDefault(_normalizeNativeEvent);var _react=require('react');var _react2=_interopRequireDefault(_react);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}(0,_modality2.default)();/**
+ * Ensure event handlers receive an event of the expected shape. The 'button'
+ * role – for accessibility reasons and functional equivalence to the native
+ * button element – must also support synthetic keyboard activation of onclick,
+ * and remove event handlers when disabled.
+ */var eventHandlerNames={onClick:true,onClickCapture:true,onMoveShouldSetResponder:true,onMoveShouldSetResponderCapture:true,onResponderGrant:true,onResponderMove:true,onResponderReject:true,onResponderRelease:true,onResponderTerminate:true,onResponderTerminationRequest:true,onStartShouldSetResponder:true,onStartShouldSetResponderCapture:true,onTouchCancel:true,onTouchCancelCapture:true,onTouchEnd:true,onTouchEndCapture:true,onTouchMove:true,onTouchMoveCapture:true,onTouchStart:true,onTouchStartCapture:true};var adjustProps=function adjustProps(domProps){var isButtonRole=domProps.role==='button';var isDisabled=_AccessibilityUtil2.default.isDisabled(domProps);Object.keys(domProps).forEach(function(propName){var prop=domProps[propName];var isEventHandler=typeof prop==='function'&&eventHandlerNames[propName];if(isEventHandler){if(isButtonRole&&isDisabled){domProps[propName]=undefined;}else{// TODO: move this out of the render path
+domProps[propName]=function(e){e.nativeEvent=(0,_normalizeNativeEvent2.default)(e.nativeEvent);return prop(e);};}}});// Button role should trigger 'onClick' if SPACE or ENTER keys are pressed
+if(isButtonRole&&!isDisabled){var onClick=domProps.onClick;domProps.onKeyPress=function(e){if(!e.isDefaultPrevented()&&(e.which===13||e.which===32)){e.preventDefault();if(onClick){onClick(e);}}};}};var createDOMElement=function createDOMElement(component,props){// use equivalent platform elements where possible
+var accessibilityComponent=_AccessibilityUtil2.default.propsToAccessibilityComponent(props);var Component=accessibilityComponent||component;var domProps=(0,_createDOMProps2.default)(Component,props);adjustProps(domProps);return _react2.default.createElement(Component,_extends({},domProps,{__source:{fileName:_jsxFileName,lineNumber:91}}));};exports.default=createDOMElement;
